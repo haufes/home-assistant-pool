@@ -1,0 +1,88 @@
+title: Pool
+views:
+    # View tab title.
+  - title: Pool
+    # Optional unique id for direct access /lovelace/${id}
+    id: poolview
+    # Each view can have a different theme applied.
+    theme: dark-mode
+    # The cards to show on this view.
+#    cards:
+#        # The filter card will filter entities for their state
+#      - type: entity-filter
+#        entities:
+#          - switch.pool_heat_pump
+#          - switch.pool_pump
+#          - sensor.dark_sky_temperature
+#        state_filter:
+#          - 'home'
+#        card_config:
+#          type: glance
+#          title: People that are home
+#
+#        # The picture entity card will represent an entity with a picture
+#      - type: picture-entity
+#        image: https://www.home-assistant.io/images/default-social.png
+#        entity: light.bed_light
+
+#    # Specify a tab icon if you want the view tab to be an icon.
+#  - icon: mdi:home-assistant
+#    # Title of the view. Will be used as the tooltip for tab icon
+#    title: Second view
+    cards:
+        # Entities card will take list of entities and show their state.
+      - type: glance
+        # Title of the entities card
+        title: Temperature
+        # The entities here will be shown in the same order as specified.
+        # Each entriy is an entity ID or a map with extra options.
+        entities:
+          - entity: sensor.water_temperature
+            name: Water
+          - entity: sensor.heat_pump_temperature
+            name: Heat Pump
+          - entity: sensor.air_temperature
+            name: Air
+          - entity: sensor.pump_pressure
+            name: Pump Pressure
+          - entity: sensor.heat_pump_status
+            name: Heating       
+            
+            
+        # Entities card will take list of entities and show their state.
+      - type: entities
+        # Title of the entities card
+        title: Pool control
+        show_header_toggle: False
+        # The entities here will be shown in the same order as specified.
+        # Each entriy is an entity ID or a map with extra options.
+        entities:
+          - switch.pool_pump
+          - input_select.pump_control
+          - switch.pool_heat_pump
+          - input_select.heat_pump_control
+      - type: history-graph
+        title: 'System History'
+        hours_to_show: 48
+        entities:
+          - switch.pool_pump
+          - sensor.heat_pump_status
+          - sensor.air_temperature
+          - sensor.water_temperature
+          - sensor.heat_pump_temperature
+      - type: history-graph
+        title: 'Pressure History'
+        hours_to_show: 720
+        entities:
+          - sensor.pump_pressure
+      - type: entities
+        # Title of the entities card
+        title: Timer settings
+        show_header_toggle: True
+        # The entities here will be shown in the same order as specified.
+        # Each entriy is an entity ID or a map with extra options.
+        entities:
+            - input_datetime.pump_start_time
+            - input_datetime.pump_stop_time
+            - input_datetime.heat_pump_start_time
+            - input_datetime.heat_pump_stop_time

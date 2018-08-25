@@ -1,0 +1,183 @@
+# - alias: Pool pump on
+  # trigger:
+    # platform: time
+    # at: '19:00:00'
+  # action:
+    # - service: switch.turn_on
+      # entity_id: switch.pool_pump
+     # entity_id: fan.pump
+     # data:
+       # speed: 2142
+
+# - alias: Pool pump off
+  # trigger:
+    # platform: time
+    # at: '7:00:00'
+  # condition:
+    # condition: state
+    # entity_id: 'binary_sensor.workday_sensor'
+    # state: 'on'
+  # action:
+    # - service: switch.turn_off
+      # entity_id: switch.pool_pump
+
+# - alias: Pool Heat on
+  # trigger:
+    # platform: time
+    # at: '19:00:00'
+  # action:
+    # - service: switch.turn_on
+      # entity_id: switch.pool_heat_pump
+
+# - alias: Pool Heat off
+  # trigger:
+    # platform: time
+    # at: '7:00:00'
+  # condition:
+    # condition: state
+    # entity_id: 'binary_sensor.workday_sensor'
+    # state: 'on'
+  # action:
+    # - service: switch.turn_off
+      # entity_id: switch.pool_heat_pump
+      
+# - alias: Pump on start
+  # trigger:
+    # platform: homeassistant
+    # event: start
+  # condition:
+    # condition: or
+    # conditions:
+      # - condition: state
+        # entity_id: 'binary_sensor.workday_sensor'
+        # state: 'off'
+      # - condition: time
+        # after: '19:00:00'
+        # before: '7:00:00'
+  # action:
+    # - service: switch.turn_on
+      # entity_id: switch.pool_heat_pump
+
+# - alias: Pool Heat on start
+  # trigger:
+    # platform: homeassistant
+    # event: start
+  # condition:
+    # condition: or
+    # conditions:
+      # - condition: state
+        # entity_id: 'binary_sensor.workday_sensor'
+        # state: 'off'
+      # - condition: time
+        # after: '19:00:00'
+        # before: '7:00:00'
+  # action:
+    # - service: switch.turn_on
+      # entity_id: switch.pool_heat_pump
+
+
+- alias: Pool Pump on
+  trigger:
+    platform: template
+    value_template: "{{  
+        ((states('sensor.time') >=(states.input_datetime.pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) or
+          states('sensor.time') < (states.input_datetime.pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) if
+          (states.input_datetime.pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False))<=
+          (states.input_datetime.pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) else 
+          states('sensor.time') >= (states.input_datetime.pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) and
+          states('sensor.time') < (states.input_datetime.pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)))
+        or 
+        is_state('binary_sensor.workday_sensor', 'off')) 
+        and 
+        (is_state('input_select.pump_control', 'Automatic'))}}"
+  action:
+    - service: switch.turn_on
+      entity_id: switch.pool_pump
+     
+      
+- alias: Pool Pump off
+  trigger:
+    platform: template
+    value_template: "{{  
+        (not (states('sensor.time') >=(states.input_datetime.pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) or
+          states('sensor.time') < (states.input_datetime.pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) if
+          (states.input_datetime.pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False))<=
+          (states.input_datetime.pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) else 
+          states('sensor.time') >= (states.input_datetime.pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) and
+          states('sensor.time') < (states.input_datetime.pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)))
+        and
+        is_state('binary_sensor.workday_sensor', 'on')
+        and 
+        (is_state('input_select.pump_control', 'Automatic')))}}"
+  action:
+    - service: switch.turn_off
+      entity_id: switch.pool_pump    
+
+- alias: Pool Heat on
+  trigger:
+    platform: template
+    value_template: "{{  
+        ((states('sensor.time') >=(states.input_datetime.heat_pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) or
+          states('sensor.time') < (states.input_datetime.heat_pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) if
+          (states.input_datetime.heat_pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False))<=
+          (states.input_datetime.heat_pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) else 
+          states('sensor.time') >= (states.input_datetime.heat_pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) and
+          states('sensor.time') < (states.input_datetime.heat_pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)))
+        or 
+        is_state('binary_sensor.workday_sensor', 'off')) 
+        and 
+        (is_state('input_select.heat_pump_control', 'Automatic'))}}"
+  action:
+    - service: switch.turn_on
+      entity_id: switch.pool_heat_pump
+     
+      
+- alias: Pool Heat Off
+  trigger:
+    platform: template
+    value_template: "{{  
+        (not (states('sensor.time') >=(states.input_datetime.heat_pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) or
+          states('sensor.time') < (states.input_datetime.heat_pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) if
+          (states.input_datetime.heat_pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False))<=
+          (states.input_datetime.heat_pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) else 
+          states('sensor.time') >= (states.input_datetime.heat_pump_start_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)) and
+          states('sensor.time') < (states.input_datetime.heat_pump_stop_time.attributes.timestamp | int | timestamp_custom('%H:%M', False)))
+        and
+        is_state('binary_sensor.workday_sensor', 'on')
+        and 
+        (is_state('input_select.heat_pump_control', 'Automatic')))}}"
+  action:
+    - service: switch.turn_off
+      entity_id: switch.pool_heat_pump    
+
+      
+- alias: Trigger low presure warning
+  trigger:
+    platform: state
+    entity_id: sensor.pump_low_presure
+    from: "False"
+    to: "True"
+    for:
+       minutes: 10
+  action:
+    service: notify.notify_pool
+    data:
+       title : "Pump pressure warning"
+       message : "The pump pressure is low and the pump is on!"
+       
+       
+       
+# - alias: after automation reload
+  # trigger:
+    # platform: event
+    # event_type: call_service
+    # event_data:
+      # domain: automation
+      # service: reload
+  # action:
+    # - delay:
+        # seconds: 60
+    # - service: automation.trigger
+      # entity_id: automation.steveherestart      
+      
+      

@@ -1,0 +1,10 @@
+pool:
+  name: Pool Automation
+  icon: mdi:pool
+  entities:
+    - automation.pool_heat_off
+    - automation.pool_heat_on
+    - automation.pool_pump_off
+    - automation.pool_pump_on
+    - automation.trigger_low_presure_warning
+    

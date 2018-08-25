@@ -1,0 +1,152 @@
+homeassistant:
+  # Name of the location where Home Assistant is running
+  name: Home
+  # Location required to calculate the time the sun rises and sets
+  latitude: 45.325
+  longitude: -75.9116
+  # Impacts weather/sunrise data (altitude above sea level in meters)
+  elevation: 76
+  # metric for Metric, imperial for Imperial
+  unit_system: metric
+  # Pick yours from here: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+  time_zone: America/Toronto
+  # Customization file
+  customize: !include customize.yaml
+
+# Show links to resources in log and frontend
+#introduction:
+
+# Enables the frontend
+frontend:
+
+# Enables configuration UI
+config:
+
+http:
+  # Secrets are defined in the file secrets.yaml
+  # api_password: !secret http_password
+  # Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+  # base_url: example.duckdns.org:8123
+  server_port: 80
+
+# Checks for available updates
+# Note: This component will send some information about your system to
+# the developers to assist with development of Home Assistant.
+# For more information, please see:
+# https://home-assistant.io/blog/2016/10/25/explaining-the-updater/
+updater:
+  # Optional, allows Home Assistant developers to focus on popular components.
+  # include_used_components: true
+
+# Discover some devices automatically
+#discovery:
+
+# Allows you to issue voice commands from the frontend in enabled browsers
+#conversation:
+
+# Enables support for tracking state changes over time
+history:
+
+# View all events in a logbook
+logbook:
+
+# Enables a map showing the location of tracked devices
+#map:
+#
+# Track the sun
+sun:
+
+recorder:
+  exclude:
+    entities:
+        - sensor.time        
+
+sensor:
+  - platform: darksky
+    api_key: cb040ca9d0cadcd6bb833a4ca702e4de
+    monitored_conditions:
+      - nearest_storm_distance
+      - cloud_cover
+#      - temperature
+#      - humidity
+  - platform: onewire
+    names:
+      28-0417c4b661ff: Air
+      28-0517c48e2cff: Water
+      28-0417c441ccff: Heat Pump      
+  - platform: command_line
+    name: Pump Pressure
+    command: "/usr/bin/python /home/homeassistant/pool_pressure_sensor.py"
+    unit_of_measurement: "PSI"      
+    value_template: '{{ value_json.psi }}'
+    icon_template: mdi:mdi-gauge
+  - platform: time_date      
+      
+  - platform: template
+    sensors:
+        heat_pump_status:
+          friendly_name: "Heating"
+          value_template: "{{ \"Yes\" if ( (float(states.sensor.heat_pump_temperature.state) - float(states.sensor.water_temperature.state))  > 1 and is_state('switch.pool_pump', 'on')) else \"No\" }}" 
+          icon_template: "{{ \"mdi:radiator\" if ( (float(states.sensor.heat_pump_temperature.state) - float(states.sensor.water_temperature.state))  > 1 and is_state('switch.pool_pump', 'on')) else \"mdi:panorama-fisheye\" }}"                               
+        pump_low_presure:
+           value_template: "{{float(states(\"sensor.pump_pressure\")) < 1 and is_state('switch.pool_pump', 'on')}}"
+           icon_template: mdi:mdi-gauge
+             
+input_datetime:
+  pump_start_time:
+    name: Pump Start Time
+    has_date: false
+    has_time: true
+  pump_stop_time:
+    name: Pump Stop Time
+    has_date: false
+    has_time: true
+  heat_pump_start_time:
+    name: Heat Pump Start Time
+    has_date: false
+    has_time: true
+  heat_pump_stop_time:
+    name: Heat Pump Stop Time
+    has_date: false
+    has_time: true    
+    
+input_select:
+  pump_control:
+    name: Pump Control
+    options:
+     - "Automatic"
+     - "Manual"
+  heat_pump_control:
+    name: Heat Pump Control
+    options:
+     - "Automatic"
+     - "Manual"
+      
+binary_sensor:
+  - platform: workday
+    country: CA
+
+switch:
+  - platform: rpi_gpio
+    ports:
+      17: Pool Pump
+      27: Pool Heat Pump
+    invert_logic: true
+    
+notify:
+  - name: notify_pool
+    platform: smtp
+    server: smtp.gmail.com
+    port: 587
+    timeout: 15
+    sender: !secret gmail_account
+    encryption: starttls
+    username: !secret gmail_account
+    password: !secret gmail_account_password
+    recipient: !secret notification_recipients
+    sender_name: Pool Controller   
+    
+       
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml

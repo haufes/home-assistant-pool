@@ -1,0 +1,4 @@
+    switch.pool_pump:
+        icon: mdi:engine
+    switch.pool_heat_pump:
+        icon: mdi:hot-tub      
