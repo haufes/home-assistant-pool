@@ -31,5 +31,7 @@
  - [Raspberry Pi Analog Water Sensor Tutorial | Rototron](https://www.rototron.info/raspberry-pi-analog-water-sensor-tutorial/)
  
 ## Install
-Install Home assiant then clone this repo into it's config folder
-Add secrets.yaml file after cloning with the login and email details
+
+Install Home assiant, then clone this repo into it's config folder.
+
+Add a secrets.yaml file after cloning. Contains the login and email details for gmail and recipients
