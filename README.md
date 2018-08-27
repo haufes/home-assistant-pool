@@ -1,4 +1,4 @@
-# Home assiant config for pool control
+# Home Assistant config for pool control
 
 ## Features 
 - Control the weekday schedual of the pool pump and heat pump via the UI (Hydro off peak hours)
