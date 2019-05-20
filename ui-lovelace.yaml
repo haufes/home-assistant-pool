@@ -63,7 +63,8 @@ views:
           - input_select.heat_pump_control
       - type: history-graph
         title: 'System History'
-        hours_to_show: 48
+        hours_to_show: 720 
+        #48
         entities:
           - switch.pool_pump
           - sensor.heat_pump_status
