@@ -34,9 +34,23 @@ Changed from a MCP3008 to MCP3304 to get a better resolution of the pressure sen
  - [Reading from a MCP3002 analog-to-digital converter](http://raspberry.io/projects/view/reading-from-a-mcp3002-analog-to-digital-converter/)
  - [Python code to use the MCP3008 analog to digital converter with a Raspberry Pi or BeagleBone black.](https://github.com/adafruit/Adafruit_Python_MCP3008)
  - [Raspberry Pi Analog Water Sensor Tutorial | Rototron](https://www.rototron.info/raspberry-pi-analog-water-sensor-tutorial/)
- 
+ - [Install docker] (https://howchoo.com/g/nmrlzmq1ymn/how-to-install-docker-on-your-raspberry-pi)
 ## Install
 
-Install Home assiant, then clone this repo into it's config folder.
+Install the docker home assistant container
+
+sudo docker run --restart always --init -d --name="homeassistant" --cap-add ALL -v /lib/modules:/lib/modules -v /sys:/sys --device /dev/ttyAMA0:/dev/ttyAMA0 --device /dev/mem:/dev/mem --privileged -v /home/pi/homeassiant-pool:/config -v /etc/localtime:/etc/localtime:ro --net=host homeassistant/raspberrypi3-homeassistant
+
+Install gpiozero into the container
+sudo docker exec -it homeassistant pip install gpiozero
+
+run in container
+sudo docker exec -it homeassistant /bin/bash
+
+restart
+sudo docker restart homeassistant
+
+
+Clone this repo into it's config folder. /home/homeassistant/docker
 
 Add a secrets.yaml file after cloning. Contains the login and email details for gmail and recipients

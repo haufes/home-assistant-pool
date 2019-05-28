@@ -105,3 +105,6 @@ venv.bak/
 
 #Homeassiant
 secrets.yaml
+.HA_VERSION
+.storage/
+home-assistant_v2.db*

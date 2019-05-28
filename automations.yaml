@@ -1,81 +1,4 @@
-# - alias: Pool pump on
-  # trigger:
-    # platform: time
-    # at: '19:00:00'
-  # action:
-    # - service: switch.turn_on
-      # entity_id: switch.pool_pump
-     # entity_id: fan.pump
-     # data:
-       # speed: 2142
-
-# - alias: Pool pump off
-  # trigger:
-    # platform: time
-    # at: '7:00:00'
-  # condition:
-    # condition: state
-    # entity_id: 'binary_sensor.workday_sensor'
-    # state: 'on'
-  # action:
-    # - service: switch.turn_off
-      # entity_id: switch.pool_pump
-
-# - alias: Pool Heat on
-  # trigger:
-    # platform: time
-    # at: '19:00:00'
-  # action:
-    # - service: switch.turn_on
-      # entity_id: switch.pool_heat_pump
-
-# - alias: Pool Heat off
-  # trigger:
-    # platform: time
-    # at: '7:00:00'
-  # condition:
-    # condition: state
-    # entity_id: 'binary_sensor.workday_sensor'
-    # state: 'on'
-  # action:
-    # - service: switch.turn_off
-      # entity_id: switch.pool_heat_pump
-      
-# - alias: Pump on start
-  # trigger:
-    # platform: homeassistant
-    # event: start
-  # condition:
-    # condition: or
-    # conditions:
-      # - condition: state
-        # entity_id: 'binary_sensor.workday_sensor'
-        # state: 'off'
-      # - condition: time
-        # after: '19:00:00'
-        # before: '7:00:00'
-  # action:
-    # - service: switch.turn_on
-      # entity_id: switch.pool_heat_pump
-
-# - alias: Pool Heat on start
-  # trigger:
-    # platform: homeassistant
-    # event: start
-  # condition:
-    # condition: or
-    # conditions:
-      # - condition: state
-        # entity_id: 'binary_sensor.workday_sensor'
-        # state: 'off'
-      # - condition: time
-        # after: '19:00:00'
-        # before: '7:00:00'
-  # action:
-    # - service: switch.turn_on
-      # entity_id: switch.pool_heat_pump
-
-
+#When the pump control is on automatic, pump will be turned on when the current time is between the start and stop time or it's not a work day
 - alias: Pool Pump on
   trigger:
     platform: template
@@ -95,6 +18,7 @@
       entity_id: switch.pool_pump
      
       
+#When the pump control is on automatic, pump will be turned off when the current time is not between the start and stop time and it's a work day
 - alias: Pool Pump off
   trigger:
     platform: template
@@ -113,6 +37,7 @@
     - service: switch.turn_off
       entity_id: switch.pool_pump    
 
+#When the heat pump control is on automatic, heat pump will be turned on when the current time is between the start and stop time or it's not a work day
 - alias: Pool Heat on
   trigger:
     platform: template
@@ -132,6 +57,7 @@
       entity_id: switch.pool_heat_pump
      
       
+#When the heat pump control is on automatic, heat pump will be turned off when the current time is not between the start and stop time and it's a work day
 - alias: Pool Heat Off
   trigger:
     platform: template
@@ -150,7 +76,7 @@
     - service: switch.turn_off
       entity_id: switch.pool_heat_pump    
 
-      
+ #Send an alert when the pump is running for 10 minutes with no pressure
 - alias: Trigger low presure warning
   trigger:
     platform: state
@@ -160,24 +86,36 @@
     for:
        minutes: 10
   action:
-    service: notify.notify_pool
-    data:
-       title : "Pump pressure warning"
-       message : "The pump pressure is low and the pump is on!"
-       
-       
-       
-# - alias: after automation reload
-  # trigger:
-    # platform: event
-    # event_type: call_service
-    # event_data:
-      # domain: automation
-      # service: reload
-  # action:
-    # - delay:
-        # seconds: 60
-    # - service: automation.trigger
-      # entity_id: automation.steveherestart      
+    - service: notify.notify_pool
+      data:
+         title : "Pump pressure warning"
+         message : "The pump pressure is low and the pump is on!"
+    - service: ifttt.trigger
+      data: { "event": "pump_status", "value1": "low presure warning"}
+              
+
+#After an amount of time the temperature reading in the pipes will be close to the pool temperature                            
+- alias: Trigger is water temperature accurate 
+  trigger:
+    platform: state
+    entity_id: sensor.pump_has_presure
+    from: "False"
+    to: "True"
+    for:
+       minutes: 10
+  action:
+    - service: input_boolean.turn_on
+      entity_id: input_boolean.water_temperature_accurate       
       
-      
+#No water running in the pipes, the temperature reading will not be accurate
+- alias: Trigger is not water temperature accurate 
+  trigger:
+    platform: state
+    entity_id: sensor.pump_has_presure
+    from: "True"
+    to: "False"
+  action:
+    - service: input_boolean.turn_off
+      entity_id: input_boolean.water_temperature_accurate       
+             
+              
