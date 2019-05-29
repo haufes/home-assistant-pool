@@ -11,7 +11,7 @@ views:
         # Entities card will take list of entities and show their state.
       - type: glance
         # Title of the entities card
-        title: Temperature
+        title: Pool Status
         # The entities here will be shown in the same order as specified.
         # Each entriy is an entity ID or a map with extra options.
         entities:
