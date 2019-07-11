@@ -93,9 +93,8 @@
     - service: ifttt.trigger
       data: { "event": "pump_status", "value1": "low presure warning"}
               
-
 #After an amount of time the temperature reading in the pipes will be close to the pool temperature                            
-- alias: Trigger is water temperature accurate 
+- alias: Trigger water temperature is accurate 
   trigger:
     platform: state
     entity_id: sensor.pump_has_presure
@@ -108,7 +107,7 @@
       entity_id: input_boolean.water_temperature_accurate       
       
 #No water running in the pipes, the temperature reading will not be accurate
-- alias: Trigger is not water temperature accurate 
+- alias: Trigger water temperature is not accurate 
   trigger:
     platform: state
     entity_id: sensor.pump_has_presure

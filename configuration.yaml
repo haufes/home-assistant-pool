@@ -72,11 +72,11 @@ recorder:
 sensor:
   - platform: time_date      
   
-  - platform: darksky
-    api_key: !secret darksky_key    
-    monitored_conditions:
-      - nearest_storm_distance
-      - cloud_cover
+  # - platform: darksky
+    # api_key: !secret darksky_key    
+    # monitored_conditions:
+      # - nearest_storm_distance
+      # - cloud_cover
 
   - platform: onewire
     names:
@@ -97,8 +97,8 @@ sensor:
         #Detirming it the heat pump is running by calculate the diffrence of the water in temperature from the output temperature
         heat_pump_status:
           friendly_name: "Heating"
-          value_template: "{{ \"Yes\" if ( (float(states.sensor.raw_heat_pump_temperature.state) - float(states.sensor.raw_water_temperature.state))  > 1 and is_state('switch.pool_pump', 'on')) else \"No\" }}" 
-          icon_template: "{{ \"mdi:radiator\" if ( (float(states.sensor.raw_heat_pump_temperature.state) - float(states.sensor.raw_water_temperature.state))  > 1 and is_state('switch.pool_pump', 'on')) else \"mdi:panorama-fisheye\" }}"     
+          value_template: "{{ \"Yes\" if ( (float(states.sensor.raw_heat_pump_temperature.state) - float(states.sensor.raw_water_temperature.state))  > 1.5 and is_state('switch.pool_pump', 'on')and is_state('switch.pool_heat_pump', 'on') )  else \"No\" }}" 
+          icon_template: "{{ \"mdi:radiator\" if ( (float(states.sensor.raw_heat_pump_temperature.state) - float(states.sensor.raw_water_temperature.state))  > 1.5 and is_state('switch.pool_pump', 'on')and is_state('switch.pool_heat_pump', 'on') )  else \"mdi:panorama-fisheye\" }}"     
         #Low presure when the pump is running
         pump_low_presure:
            value_template: "{{float(states(\"sensor.pump_pressure\")) < 1 and is_state('switch.pool_pump', 'on')}}"
