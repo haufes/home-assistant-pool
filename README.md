@@ -11,7 +11,7 @@ This repository contains the config files for my Home Assiant installation as we
 - Monitor if the heat pump is running based on temperature increase of the water
 
 
-![UI](https://photos.google.com/share/AF1QipPd23cosl_N7I3wDKKjx02mKE319PRBtdANf8HQsN3tp99fpL7GtVKpOv30xRhetA/photo/AF1QipPrKzfBRaqB8sHn4Q4uKvEoyGaQvb2GLDugb8Iw?key=RlR3LVpZalNTS1YzUHBaVV93NmNDZEwxWjhxTmRR)
+![UI](XUYUpdRn6QAPsC8mUuM3jmWnTPGO2fbyvdCzQvwz3KISJVSdbpSBATFoEVtHP5atw4mNS3kBz0JXPJb_2VblFy4hK2IadFxCQJflW3N6unxs2x7CwSqPSjAIPp0F1gqPCSJSB1n4EnE7XgXxm4h2QoROAwF0hNys0OF3jeCqSwJC6GTA1SHHZUlRkXr9W2J2DDJBsFBJkX5HUdZQIwfip6i_jPsxvlk8UYJlDNrdWkMLwp_1Qko6PnaSOgzS)
 
 Changed from a MCP3008 to MCP3304 to get a better resolution of the pressure sensor.
 
