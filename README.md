@@ -27,7 +27,7 @@ Changed from a MCP3008 to MCP3304 to get a better resolution of the pressure sen
 
  ## Wiring diagram
  Replace MCP3008 with MCP3304
- ![Wiring diagram](https://lh3.googleusercontent.com/eiYkt-wOfxL9Qv-RUSDkqZ2L9bfmHqCE7K6mz7LyLNYNLfosTCYQESngmEZoNrIEtnQ_40ytn3GTp26-CWt-OcqcY03n6nWddu0i6QY2B1N2w2-UwPgFAm-RfXL8cnL5oFGaiXnB3GDshH64vcoRjBgHPrrA3t7botwhrSThMWIx0TY1QvWOMH3njeQkqR7gbOXLsFrWLf461xFsiCFxGxIt0Y_J-litAL2rI51_KiV7T__OS1nmh6ISJKWPUPPDM3nUqG6Ck-XfVMrl_35BVq2Z0bhcl_0DZf_Iwllxeght8OLlnJJhLRV8VcDiViES8mlDO6BZJzBvt64hVZg6obhGHB9_9RTnIpjHNl09x7rZlUXsOl0xOfREqutuDYC3AQ4xJbafswRiv-drhsinZkbUzGNTUqsmDMFSW1GHa36-Lw4YCVd_-DsvVk15aNWPYAq5xyd2aJ8ETUXD0sL4MY1fu7IR5obbMUQjYd-kOK_mtSh10mwZyG9ZgqB0pud_zFed8wrJk066ePGZsYCk5Le8xhbxcr6paDik7H09r3MMYMetHl9jC5tKqLnoUBTNC2YcSmdkafI0IYfKWqip4ZU9eFvwpre7y3kLMtcgWdBVIXmavGN5_GAO_n9b4mmbANJnVvPaiz4stVvO3gVmpVBfeiEmKihw50ftCKWLhF5zlU2W-VG01mAv=w1366-h402-no)
+ ![Wiring diagram](https://raw.githubusercontent.com/haufes/home-assistant-pool/master/project_resorces/Pool%20Controler_schem.png)
  
  ## References
  - [Multiple DS18B20 temperature sensors - Raspberry Pi Forums](https://www.raspberrypi.org/forums/viewtopic.php?t=167896)
