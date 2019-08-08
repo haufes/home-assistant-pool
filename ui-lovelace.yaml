@@ -47,7 +47,6 @@ views:
           - sensor.heat_pump_status
           - sensor.air_temperature
           - sensor.water_temperature
-          - sensor.heat_pump_temperature
       - type: history-graph
         title: 'Pressure History'
         hours_to_show: 720
